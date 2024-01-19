@@ -1,0 +1,34 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model SupportAgent {
+  id String @id @map("_id") @default(auto()) @db.ObjectId()
+  name String
+  email String
+  phone String
+  description String
+  active Boolean
+  dateCreated DateTime
+}
+
+model SupportTicket {
+  id String @id @map("_id") @default(auto()) @db.ObjectId()
+  topic String
+  description String
+  dateCreated DateTime
+  severity String
+  type String
+  assignedTo String?
+  status String // New, Assigned, Resolved
+  resolvedOn DateTime?
+  @@index([assignedTo])
+}
