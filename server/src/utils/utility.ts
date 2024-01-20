@@ -1,14 +1,18 @@
 import { PrismaClient } from '@prisma/client';
 
+let prismaClient: PrismaClient | null = null;
+
 export function getPrismaClient() {
-	const prismaClient = new PrismaClient({
-		log: [
-			{
-				emit: 'stdout',
-				level: 'error'
-			}
-		]
-	});
+	if (!prismaClient) {
+		prismaClient = new PrismaClient({
+			log: [
+				{
+					emit: 'stdout',
+					level: 'error'
+				}
+			]
+		});
+	}
 	return prismaClient;
 }
 

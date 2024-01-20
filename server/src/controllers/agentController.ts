@@ -1,8 +1,8 @@
 import { Request } from 'express';
-import { createDate, getPrismaClient } from '../utils/utility';
-import { IAgent, IAgentReqBody, IAgentWithId } from '../types/common';
 import { AgentDbOps } from '../ops/AgentDbOps';
 import { ValidatorOps } from '../ops/ValidatorOps';
+import { IAgent, IAgentReqBody, IAgentWithId } from '../types/common';
+import { createDate, getPrismaClient } from '../utils/utility';
 
 export const addAgentApi = async (req: Request) => {
 	const prismaClient = getPrismaClient();
@@ -21,4 +21,10 @@ export const addAgentApi = async (req: Request) => {
 	agentResponse = { ...agentForSubmit, id: agentId };
 
 	return { isSuccess: true, agent: agentResponse };
+};
+
+export const getAllAgentsApi = async (req: Request) => {
+	const prismaClient = getPrismaClient();
+	const allAgents = await AgentDbOps.fetchAllAgents(prismaClient);
+	return { agents: allAgents };
 };

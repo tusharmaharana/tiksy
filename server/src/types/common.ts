@@ -63,3 +63,19 @@ export interface IAgentWithId extends IAgent {
 }
 
 export type IPrisma = Omit<PrismaClient, '$connect' | '$disconnect' | '$on' | '$transaction' | '$use' | '$extends'>;
+
+export enum TicketSortById {
+	OldestTicketCreateDate = 'createdate-asc',
+	NewestTicketCreateDate = 'createdate-desc',
+	NewestResolvedOn = 'resolvedate-desc',
+	OldestResolvedOn = 'resolvedate-asc'
+}
+
+export interface IFetchTicketParams {
+	pageNo: number | null;
+	assignedTo: string | null;
+	status: string | null;
+	severity: string | null;
+	type: string | null;
+	sortBy: string | null;
+}

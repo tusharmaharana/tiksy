@@ -8,20 +8,23 @@ datasource db {
 }
 
 model SupportAgent {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  active         Boolean
-  dateCreated    DateTime @db.Date
-  description    String?
-  email          String
-  lastActivityOn DateTime @db.Date
-  name           String
-  phone          String
+  id              String          @id @default(auto()) @map("_id") @db.ObjectId
+  active          Boolean
+  dateCreated     DateTime        @db.Date
+  description     String?
+  email           String
+  lastActivityOn  DateTime        @db.Date
+  name            String
+  phone           String
+  assignedTickets SupportTicket[]
 }
 
 model SupportTicket {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
-  assignedTo  String   @db.ObjectId
-  dateCreated DateTime @db.Date
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  assignedTo  String       @db.ObjectId
+  agent       SupportAgent @relation(fields: [assignedTo], references: [id])
+  dateCreated DateTime     @db.Date
+  resolvedOn  DateTime?    @db.Date
   description String
   severity    String
   status      String

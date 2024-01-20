@@ -1,6 +1,4 @@
-import { IAgent, IPrisma, ZAgent } from '../types/common';
-import { HttpError } from '../utils/HttpError';
-import { HttpStatusCode } from '../utils/HttpStatusCodes';
+import { IAgent, IPrisma } from '../types/common';
 
 export class AgentDbOps {
 	static async insertAgentToDb(prisma: IPrisma, agentData: IAgent) {
@@ -38,5 +36,14 @@ export class AgentDbOps {
 			}
 		});
 		await updateAgentQuery;
+	}
+
+	static async fetchAllAgents(prisma: IPrisma) {
+		const getAllAgentsQuery = prisma.supportAgent.findMany({
+			orderBy: {
+				name: 'asc'
+			}
+		});
+		return await getAllAgentsQuery;
 	}
 }

@@ -1,12 +1,12 @@
-import express, { NextFunction, Request, Response } from 'express';
 import cors from 'cors';
-import { HttpError, sendErrorResponse } from './utils/HttpError';
-import { ZodArray, ZodEffects, ZodObject, ZodRecord } from 'zod';
+import express, { NextFunction, Request, Response } from 'express';
 import { get, set } from 'lodash';
-import { HttpStatusCode } from './utils/HttpStatusCodes';
-import { ZAgentReqBody, ZTicketReqBody } from './types/common';
+import { ZodArray, ZodEffects, ZodObject, ZodRecord } from 'zod';
 import * as agentController from './controllers/agentController';
 import * as ticketController from './controllers/ticketController';
+import { ZAgentReqBody, ZTicketReqBody } from './types/common';
+import { HttpError, sendErrorResponse } from './utils/HttpError';
+import { HttpStatusCode } from './utils/HttpStatusCodes';
 
 const app = express();
 
@@ -32,6 +32,7 @@ app.post(
 	}),
 	callableWrapper(agentController.addAgentApi)
 );
+app.get('/api/support-agents', callableWrapper(agentController.getAllAgentsApi));
 
 app.post(
 	'/api/support-tickets',
@@ -41,7 +42,7 @@ app.post(
 	}),
 	callableWrapper(ticketController.addTicketApi)
 );
-app.get('/api/support-tickets', callableWrapper(ticketController.fetchAllTickets));
+app.get('/api/support-tickets', callableWrapper(ticketController.getAllTicketsApi));
 
 interface ICheckSchemaParams {
 	expectedProps?: { body?: string[]; params?: string[]; query?: string[] } | null;
