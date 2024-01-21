@@ -6,22 +6,22 @@ const emailRegExp =
 	/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
 export enum TicketType {
-	Internal = 'internal',
-	User = 'user'
+	Internal = 'Internal',
+	User = 'User'
 }
 export const ZTicketType = z.nativeEnum(TicketType);
 
 export enum TicketSeverity {
-	'Low' = 'low',
-	'Normal' = 'normal',
-	'High' = 'high'
+	'Low' = 'Low',
+	'Normal' = 'Normal',
+	'High' = 'High'
 }
 export const ZTicketSeverity = z.nativeEnum(TicketSeverity);
 
 export enum TicketStatus {
-	New = 'new',
-	Assigned = 'assigned',
-	Resolved = 'resolved'
+	New = 'New',
+	Assigned = 'Assigned',
+	Resolved = 'Resolved'
 }
 export const ZTicketStatus = z.nativeEnum(TicketStatus);
 

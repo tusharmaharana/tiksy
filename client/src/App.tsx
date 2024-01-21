@@ -1,21 +1,36 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import './App.css';
+import { Toaster } from 'react-hot-toast';
+import Container from './components/ui/container';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import Tickets from './components/tickets/Tickets';
+import Agents from './components/Agents';
+import { Sidebar } from './components/SideBar';
+import TicketForm from './components/tickets/TicketForm';
+import { AppBackdrop } from './components/widgets/AppBackdrop';
 
 function App() {
-	const [count, setCount] = useState(0);
-
 	return (
-		<>
-			<h1>Vite + React</h1>
-			<div className='card'>
-				<button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-				<p>
-					Edit <code>src/App.tsx</code> and save to test HMR
-				</p>
+		<Container>
+			<Toaster />
+			<AppBackdrop />
+			<div className='h-full flex'>
+				<Sidebar />
+				<div className='h-full flex-1 overflow-auto'>
+					<AppRoutes />
+				</div>
 			</div>
-			<p className='read-the-docs'>Click on the Vite and React logos to learn more</p>
-		</>
+		</Container>
+	);
+}
+
+function AppRoutes() {
+	return (
+		<Routes>
+			<Route index element={<Navigate to={'/tickets'} />} />
+			<Route path='tickets' element={<Tickets />} />
+			<Route path='tickets/add' element={<TicketForm />} />
+			<Route path='agents' element={<Agents />} />
+			{/* <Route path='agents/add' element={<AgentForm />} /> */}
+		</Routes>
 	);
 }
 
