@@ -124,7 +124,7 @@ export default Tickets;
 
 const columns: IColumn[] = [
 	{ accessor: 'type', header: 'Type', minWidth: 100, maxWidth: 100 },
-	{ accessor: 'topic', header: 'Topic' },
+	{ accessor: 'topic', header: 'Topic', className: 'truncate' },
 	{ accessor: 'status', header: 'Status', minWidth: 150, maxWidth: 150 },
 	{ accessor: 'severity', header: 'Severity', minWidth: 150, maxWidth: 150 },
 	{ accessor: 'assignedTo', header: 'Assigned To', minWidth: 150, maxWidth: 150 },
