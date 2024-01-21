@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Button } from '../ui/button';
-import { Plus } from 'lucide-react';
+import { Eraser, Plus } from 'lucide-react';
 import AppLayout, { IAppLayoutHeader } from '../widgets/AppLayout';
 import AppSelect from '../widgets/AppSelect';
 import { useTickets } from './ticket.queries';
@@ -11,16 +11,22 @@ import { SeverityFilterOptions, SortByFilterOptions, StatusFilterOptions, TypeFi
 import { useAppRoute } from '../hooks/useAppRoute';
 import ViewTicketSheet from './ViewTicketSheet';
 import AppLoader from '../widgets/AppLoader';
+import { useAgents } from '../agents/agent.queries';
+import { getAgentsSelectOptions } from '../agents/agents.utils';
+import { isEqual } from 'lodash';
 
 const Tickets = () => {
 	const [filters, setFilters] = useState<ITicketFilterKeys>(null);
 	const [selectedTicket, setSelectedTicket] = useState(null);
 	const { data: res, isLoading } = useTickets(filters);
+	const { data: agentRes, isLoading: isAgentLoading } = useAgents();
 	const { goto } = useAppRoute();
+
+	const initialFilter = { sort: TicketSortById.NewestTicketCreateDate };
 
 	useEffect(() => {
 		if (!filters) {
-			setFilters({ sort: TicketSortById.NewestTicketCreateDate });
+			setFilters(initialFilter);
 		}
 	}, [filters]);
 
@@ -33,6 +39,10 @@ const Tickets = () => {
 			</Button>
 		),
 	};
+
+	const showClear = useMemo(() => !isEqual(initialFilter, filters), [filters]);
+
+	const agentFilterOptions = useMemo(() => getAgentsSelectOptions((agentRes as any)?.agents), [agentRes]);
 
 	const rows = useMemo(() => {
 		const rows = [];
@@ -52,31 +62,36 @@ const Tickets = () => {
 		return rows;
 	}, [res]);
 
-	console.log(isLoading);
-
 	return (
 		<AppLayout header={layoutHeader}>
-			<div className='flex gap-1 pb-4'>
+			<div className='flex flex-wrap gap-1 pb-4'>
 				<AppSelect
 					value={filters?.type}
 					options={TypeFilterOptions}
 					onChange={(value) => setFilters((prev) => ({ ...prev, type: value }))}
 					label='Type'
-					width={200}
+					width={150}
 				/>
 				<AppSelect
 					value={filters?.status}
 					options={StatusFilterOptions}
 					onChange={(value) => setFilters((prev) => ({ ...prev, status: value }))}
 					label='Status'
-					width={200}
+					width={175}
 				/>
 				<AppSelect
 					value={filters?.severity}
 					options={SeverityFilterOptions}
 					onChange={(value) => setFilters((prev) => ({ ...prev, severity: value }))}
 					label='Severity'
-					width={200}
+					width={175}
+				/>
+				<AppSelect
+					value={filters?.assignedTo}
+					options={agentFilterOptions}
+					onChange={(value) => setFilters((prev) => ({ ...prev, assignedTo: value }))}
+					label='Assigned To'
+					width={250}
 				/>
 				<AppSelect
 					value={filters?.sort}
@@ -85,9 +100,14 @@ const Tickets = () => {
 					label='Sort By'
 					width={250}
 				/>
+				{showClear ? (
+					<Button title='Clear' variant='outline' onClick={() => setFilters(initialFilter)}>
+						Clear
+					</Button>
+				) : null}
 			</div>
 
-			{isLoading ? (
+			{isLoading || isAgentLoading ? (
 				<AppLoader />
 			) : rows?.length ? (
 				<AppTable columns={columns} data={rows} onRowClick={(ticket) => setSelectedTicket(ticket)} />

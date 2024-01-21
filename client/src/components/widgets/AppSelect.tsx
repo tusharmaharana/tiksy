@@ -43,7 +43,9 @@ const AppSelect = (props: IAppSelect) => {
 				</SelectTrigger>
 				<SelectContent className='flex flex-row mx-0 my-0'>
 					{options.map((option) => (
-						<SelectItem value={option.value}>{option.label}</SelectItem>
+						<SelectItem value={option.value} className='text-base'>
+							{option.label}
+						</SelectItem>
 					))}
 				</SelectContent>
 				{error ? <p className='text-xs text-red-500 mt-1'>{error}</p> : null}

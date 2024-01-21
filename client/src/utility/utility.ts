@@ -31,3 +31,6 @@ export type DateType = string | number | Date | dayjs.Dayjs | undefined;
 export function formatDate(date: DateType): string {
 	return dayjs(date).format('MMM D, YYYY');
 }
+
+export const emailRegExp =
+	/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

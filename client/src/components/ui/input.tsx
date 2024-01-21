@@ -4,9 +4,36 @@ import { cn } from '@/lib/utils';
 
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	error?: string;
+	isNumber?: boolean;
 }
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, type, error, ...props }, ref) => {
+const NumberRegex = /^[0-9]+$/;
+
+const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, type, error, isNumber, value, onChange, ...props }, ref) => {
+	const [inputValue, setInputValue] = React.useState('');
+
+	React.useEffect(() => {
+		setInputValue(value as string);
+	}, [value]);
+
+	const handleOnChange = (e) => {
+		const val = e.target.value;
+		let result = val;
+		if (isNumber) {
+			const isValidNumber = NumberRegex.test(val);
+			if (isValidNumber) {
+				setInputValue(val);
+			} else {
+				result = inputValue;
+			}
+		} else {
+			setInputValue(val);
+		}
+		e.currentTarget.value = result;
+		e.target.value = result;
+		onChange(e);
+	};
+
 	return (
 		<div>
 			<input
@@ -17,6 +44,8 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, type,
 					className
 				)}
 				ref={ref}
+				value={inputValue}
+				onChange={handleOnChange}
 				{...props}
 			/>
 			{error ? <p className='text-xs text-red-500 mt-1'>{error}</p> : null}
