@@ -9,7 +9,7 @@
 		"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
 		"preview": "vite preview",
 		"format": "prettier . --write --cache",
-		"clean": "rimraf node_modules build yarn-error.log .eslintcache"
+		"clean": "rimraf node_modules dist yarn-error.log .eslintcache"
 	},
 	"dependencies": {
 		"@radix-ui/react-dialog": "^1.0.5",
